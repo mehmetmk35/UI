@@ -1,0 +1,29 @@
+<div class="demo-container">
+<dx-data-grid
+  id="gridContainer"
+  [dataSource]="suppliersData"
+  [remoteOperations]="true"
+  [showBorders]="true"
+  
+>
+  <!-- <dxo-paging [pageSize]="10"   [pageIndex]="1"></dxo-paging> -->
+  <dxo-paging [enabled]="true" [pageSize]="pageSize" [pageIndex]="currentPageIndex" ></dxo-paging>  
+  <dxi-column dataField="invoiceNumber"  caption="Fatura Numarası"></dxi-column>
+  <dxi-column dataField="customerCode"   caption="Cari Kod"></dxi-column>
+  <dxi-column dataField="customerName"   caption="Cari İsim"></dxi-column>
+  <dxi-column dataField="date"           caption="Tarih"></dxi-column>   
+  <dxi-column dataField="itemCount"      caption="Kalem Adeti" ></dxi-column>
+  <dxi-column dataField="totalAmount"    caption="Genel Toplam " ></dxi-column>
+  <dxo-master-detail
+    [enabled]="true"
+    template="masterDetail"
+  ></dxo-master-detail>
+
+  <div *dxTemplate="let masterDetailItem of 'masterDetail'">
+    <app-account-transactions
+      [key]="masterDetailItem.key"
+      [rowData]="masterDetailItem.data"
+    ></app-account-transactions>
+  </div>
+</dx-data-grid>
+</div>
