@@ -1,8 +1,10 @@
+<div class="row">
 <dx-tab-panel>
-    <dxi-item title="Orders" template="ordersTab"></dxi-item>
-    <div *dxTemplate="let ordersTabItem of 'ordersTab'">
+   
+    <dxi-item title="Stok H." template="invoiceDetail"></dxi-item>
+    <div *dxTemplate="let ordersTabItem of 'invoiceDetail'">
       <dx-form labelLocation="top" class="form-container">
-        <dxi-item template="productSelectBox">
+        <!-- <dxi-item template="productSelectBox">
           <dxo-label text="Product"></dxo-label>
         </dxi-item>
         <div *dxTemplate="let selectBoxItem of 'productSelectBox'">
@@ -16,24 +18,23 @@
             (onValueChanged)="handleValueChange($event)"
           >
           </dx-select-box>
-        </div>
+        </div> -->
   
-        <dxi-item template="orderHistory">
-          <dxo-label text="Order History"></dxo-label>
+        <dxi-item template="detailInvoice">
+          <!-- <dxo-label text="Order History"></dxo-label> -->
         </dxi-item>
-        <div *dxTemplate="let order of 'orderHistory'">
-          <dx-data-grid [dataSource]="orderHistoryData" [showBorders]="true">
-            <dxo-paging [pageSize]="5"></dxo-paging>
+        <div *dxTemplate="let order of 'detailInvoice'">
+          <dx-data-grid [dataSource]="detailInvoiceData" [showBorders]="true">
+            <dxo-paging  [enabled]="true"></dxo-paging>
   
-            <dxi-column dataField="OrderID"></dxi-column>
-            <dxi-column dataField="OrderDate" dataType="date"></dxi-column>
-            <dxi-column dataField="ShipCountry"></dxi-column>
-            <dxi-column dataField="ShipCity"></dxi-column>
-            <dxi-column dataField="UnitPrice" format="currency"></dxi-column>
-            <dxi-column dataField="Quantity"></dxi-column>
-            <dxi-column dataField="Discount" format="percent"></dxi-column>
+            <dxi-column dataField="stockMovementQuantity"  caption="Miktar"></dxi-column>
+            <dxi-column dataField="stockIn_Out" caption="G/C"></dxi-column>
+            <dxi-column dataField="date" dataType="date" caption="Tarih"></dxi-column>
+            <dxi-column dataField="productNetPrice"  caption="Net F." > <dxo-format type="currency"  [precision]="5" currency="TRY"></dxo-format></dxi-column>
+            <dxi-column dataField="productGrossPrice"   caption="Brüt F." ><dxo-format type="currency"  [precision]="5" currency="TRY"></dxo-format></dxi-column>
+            <dxi-column dataField="warehouseCode" caption="Depo" ></dxi-column>      
   
-            <dxo-summary>
+            <!-- <dxo-summary>
               <dxi-total-item column="UnitPrice" summaryType="sum">
                 <dxo-value-format
                   format="currency"
@@ -44,7 +45,7 @@
                 column="Quantity"
                 summaryType="count"
               ></dxi-total-item>
-            </dxo-summary>
+            </dxo-summary> -->
           </dx-data-grid>
         </div>
       </dx-form>
@@ -70,4 +71,6 @@
       </dx-form>
     </div> -->
   </dx-tab-panel>
+</div>
+ 
   

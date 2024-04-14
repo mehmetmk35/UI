@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: "", component: HomeComponent },
   { path: "finance", loadChildren:()=>import("./ui/components/finance/finance.module").then(module=>module.FinanceModule)},
   { path: "financeDetail", loadChildren:()=>import("./ui/components/finance-detail/finance-detail.module").then(module=>module.FinanceDetailModule)},
+  { path: "financeDetail/:pageNo", loadChildren:()=>import("./ui/components/finance-detail/finance-detail.module").then(module=>module.FinanceDetailModule)},
   
 ];
 

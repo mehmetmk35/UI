@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClientServiceService } from '../common/http-client-service.service';
+import { HttpClientServiceService } from '../common/http-client-service';
 import { Observable, firstValueFrom } from 'rxjs';
 import { List_Invoice } from 'src/app/contracts/List_Invoice';
+import { List_Detail_Invoice } from 'src/app/contracts/list-detailInvoice';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +24,20 @@ export class FinanceService {
    .catch(error=>errorCallBack(error));
     return await promisData;
 
+  }
+
+  async getDetailInvoice(InvoiceNumber:string,succesCallBac?:(data:any)=>void,errorCallBack?:(errorMessage:string)=>void)
+  {
+
+    const observable:Observable<{detailInvoiceCount:number,detailInvoice:List_Detail_Invoice}>=this.httpClinet.get({
+      controller:"Invoice",
+      action:"detail",
+      queryString:`InvoiceNumber=${InvoiceNumber}`
+    });
+    const promisData=firstValueFrom(observable);
+  
+    promisData.then(data=>succesCallBac(data))
+    .catch(error=>errorCallBack(error));
+    return await promisData;
   }
 }

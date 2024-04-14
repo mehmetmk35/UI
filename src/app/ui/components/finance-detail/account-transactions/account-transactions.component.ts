@@ -1,8 +1,9 @@
-import { Component, Input, AfterViewInit } from '@angular/core';
+import { Component, Input, AfterViewInit, OnInit } from '@angular/core';
 import DataSource from 'devextreme/data/data_source';
-import * as AspNetData from 'devextreme-aspnet-data-nojquery';
-import { DxFormTypes } from 'devextreme-angular/ui/form';
-import { DxSelectBoxTypes } from 'devextreme-angular/ui/select-box';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { BaseComponent, SpinnerType } from 'src/app/base/base.component';
+import { FinanceService } from 'src/app/services/model/finance.service';
+import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/services/toastr.services/custom-toastr.service';
 
 
 @Component({
@@ -10,52 +11,43 @@ import { DxSelectBoxTypes } from 'devextreme-angular/ui/select-box';
   templateUrl: './account-transactions.component.html',
   styleUrls: ['./account-transactions.component.scss']
 })
-export class AccountTransactionsComponent implements AfterViewInit {
-  @Input() key: number;
-
-  @Input() rowData: object;
-
-  url: string;
-
+export class AccountTransactionsComponent extends  BaseComponent  implements OnInit {
+  @Input() invoiceNumber: string;
+  // @Input() rowData: object; 
   productIdBySupplier: number;
+  // productsData: DataSource;
+  detailInvoiceData: DataSource;
 
-  productsData: DataSource;
+  constructor(private financeService: FinanceService,spinner:NgxSpinnerService,private customToastrService: CustomToastrService) {
+    super(spinner);
+    this.detailInvoiceData = new DataSource({
+      store: []
+    })
 
-  orderHistoryData: DataSource;
 
-  constructor() {
-    this.url = 'https://js.devexpress.com/Demos/Mvc/api/DataGridAdvancedMasterDetailView';
   }
+  async ngOnInit() {
+    this.showSpinner(SpinnerType.BallScaleMultiple)
+    await this.financeService.getDetailInvoice(this.invoiceNumber, (data) => { 
+      this.detailInvoiceData = data.detailInvoice 
+      this.hideSpinner(SpinnerType.BallScaleMultiple)
+    
+    }, (message: string) => { 
 
-  ngAfterViewInit() {
-    this.productsData = new DataSource({
-      store: AspNetData.createStore({
-        key: 'ProductID',
-        loadParams: { SupplierID: this.key },
-        loadUrl: `${this.url}/GetProductsBySupplier`,
-        onLoaded: (items) => this.setDefaultProduct(items),
-      }),
-    });
+      this.customToastrService.message(message,"Hata",{messageType:ToastrMessageType.Error,position:ToastrPosition.TopRight})
+      this.hideSpinner(SpinnerType.BallScaleMultiple)
+    })
   }
-
-  setDefaultProduct(items) {
-    const firstItem = items[0];
-
-    if (firstItem && this.productIdBySupplier === undefined) {
-      this.productIdBySupplier = firstItem.ProductID;
-    }
-  }
-
-  handleValueChange(e: DxSelectBoxTypes.ValueChangedEvent) {
-    this.productIdBySupplier = e.value;
-    this.orderHistoryData = new DataSource({
-      store: AspNetData.createStore({
-        key: 'OrderID',
-        loadParams: { ProductID: e.value },
-        loadUrl: `${this.url}/GetOrdersByProduct`,
-      }),
-    });
-  }
+  // handleValueChange(e: DxSelectBoxTypes.ValueChangedEvent) {
+  //   this.productIdBySupplier = e.value;
+  //   this.orderHistoryData = new DataSource({
+  //     store: AspNetData.createStore({
+  //       key: 'OrderID',
+  //       loadParams: { ProductID: e.value },
+  //       loadUrl: `${this.url}/GetOrdersByProduct`,
+  //     }),
+  //   });
+  // }
 
   // customizeItemTemplate(item: DxFormTypes.SimpleItem) {
   //   item.template = 'formItem';
