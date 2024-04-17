@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+
+    <div class="form-group">
+      <label for="company">Şirket</label>
+      <select #selectCompany name="company" class="form-select" aria-label="Default select example" (change)="selectRequestBrach(selectCompany.value)">         
+        <option disabled selected>Select company</option>
+        <option *ngFor="let company of listCompany" [value]="company.companyName">{{ company.companyName }}</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="branch">İşletme</label>
+      <select #selectBranch id="branch" class="form-select" aria-label="Default select example" [(ngModel)]="defaultBranchCode">         
+        <option *ngFor="let branch of listBranch" [value]="branch.branchCode">{{ branch.branchName }}</option>
+       
+      </select>
+    </div>
+ 
+    <div class="form-group">
+      <label for="username">Kullanıcı Adı</label>
+      <input #txtUsernameOrEmail type="text" class="form-control" id="username" placeholder="Kullanıcı Adı & Email">
+      <small class="form-text text-muted invalid-feedback">***</small>
+    </div>
+    <div class="form-group">
+      <label for="password">Şifre</label>
+      <input #txtPassword type="password" class="form-control" id="password" placeholder="Şifre">
+    </div>      
+
+    <br />
+    <button style="margin-top:5px;" type="submit" class="btn btn-primary" (click)="login(txtUsernameOrEmail.value, txtPassword.value,selectCompany.value,selectBranch.value)">Giriş Yap</button>
+
+ 
+
+  </div>
+  <div class="col-md-3"></div>
+</div>

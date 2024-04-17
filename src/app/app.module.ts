@@ -11,7 +11,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { AppRoutingModule } from './app-routing.module';
 import { UiModule } from './ui/ui.module';
 import { HttpErrorHandlerInterceptorService } from './services/common/http-error-handler-interceptor.service';
- 
+
+import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,13 @@ import { HttpErrorHandlerInterceptorService } from './services/common/http-error
     FormsModule,
     HttpClientModule, 
     AppRoutingModule,
-    UiModule
+    UiModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem("accessToken"),
+        allowedDomains: ["https://localhost:7266"]
+      }
+    }) 
 
   ],
   providers: [
@@ -34,7 +41,8 @@ import { HttpErrorHandlerInterceptorService } from './services/common/http-error
       useClass: PathLocationStrategy
     }
     , { provide: "baseUrl", useValue: "https://localhost:7266/api", multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorHandlerInterceptorService, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorHandlerInterceptorService, multi: true } 
+     
   ],
   bootstrap: [AppComponent]
 })
