@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClientServiceService } from '../common/http-client-service';
+import { HttpClientService } from '../common/http-client-service';
 import { Observable, firstValueFrom } from 'rxjs';
 import { List_Invoice } from 'src/app/contracts/List_Invoice';
 import { List_Detail_Invoice } from 'src/app/contracts/list-detailInvoice';
@@ -9,7 +9,7 @@ import { List_Detail_Invoice } from 'src/app/contracts/list-detailInvoice';
 })
 export class FinanceService {
 
-  constructor(private httpClinet:HttpClientServiceService) { }
+  constructor(private httpClinet:HttpClientService) { }
 
   async getInvoice(page:number=0,size:number=5,succesCallBac?:(data:any)=>void,errorCallBack?:(errorMessage:string)=>void) : Promise<{ invoiceCount: number; invoice: List_Invoice[]}> 
   {
